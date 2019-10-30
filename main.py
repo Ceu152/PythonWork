@@ -18,7 +18,7 @@ class App(tk.Tk):
     file_menu.add_command(label="Save")
     file_menu.add_command(label="Save as...")
     menu.add_cascade(labe="File",menu=file_menu)
-    menu.add_command(label="About")
+    menu.add_command(label="About", command = self.create_aboutWindow)
     menu.add_command(label="Quit",command=self.leave_project) 
     self.config(menu=menu)
 	
@@ -40,10 +40,17 @@ class App(tk.Tk):
   
   #Criar uma janela que pede confirmação para sair.
   def leave_project(self):
-    mb.askokcancel
-    print(response)
-    self.destroy
-		
-
+    MsgBox  = tk.messagebox.askquestion('Exit Application', 'Are you sure?', icon = 'warning')
+    
+    if MsgBox == 'yes':
+      self.destroy()
+    else:
+      tk.messagebox.showinfo('Return', 'You will return to the application')
+  
+  def create_aboutWindow(self):
+    aboutWindow = tk.Toplevel(self)
+    display = tk.Label(aboutWindow, text = "Python work About Graphs\nGroup= Alex Junior Pereira\nLeonardo Henrique de Melo")
+    display.pack()
+    
 app=App()
 app.mainloop()
