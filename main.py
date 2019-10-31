@@ -5,12 +5,16 @@
 import tkinter as tk
 import tkinter.filedialog as fd
 import tkinter.messagebox as mb
+from mainCanvas import makeCanvas as mc
 
 class App(tk.Tk):
   def __init__(self):
     super().__init__()
     menu=tk.Menu(self)
     self.title("Graph Work")
+    screen_width = self.winfo_screenwidth()
+    screen_height = self.winfo_screenheight()
+    self.geometry(str(screen_width)+"x"+str(screen_height))
     file_menu=tk.Menu(menu,tearoff=0)
     file_menu.add_command(label="New file")
     file_menu.add_command(label="Open", command = self.choose_file)
@@ -21,7 +25,11 @@ class App(tk.Tk):
     menu.add_command(label="About", command = self.create_aboutWindow)
     menu.add_command(label="Quit",command=self.leave_project) 
     self.config(menu=menu)
-	
+    
+    #Criação do canvas no projeto 
+    self.canvas = tk.Canvas(self, width = self.winfo_width(), height = self.winfo_height())
+    self.canvasOrg = mc(self.canvas)
+    
   def choose_file(self):
     filetypes=(("Plain text files","*.txt"),
                ("Images","*.jpg *.gif *.png"),
