@@ -17,6 +17,7 @@ class App(tk.Tk):
     self.screen_width = self.winfo_screenwidth()
     self.screen_height = self.winfo_screenheight()
     self.geometry(str(self.screen_width)+"x"+str(self.screen_height))
+    self.canvas = tk.Canvas(self, bg = "white", width = self.screen_width, height = self.screen_height)
     file_menu=tk.Menu(menu,tearoff=0)
     file_menu.add_command(label="New file", command = self.new_canvas)
     file_menu.add_command(label="Open", command = self.choose_file)
@@ -74,7 +75,7 @@ class App(tk.Tk):
   #Função para criar um novo canvas e colocá-lo na tela
   def new_canvas(self):
     #Criação do canvas no projeto 
-    self.canvas = tk.Canvas(self, bg = "white", width = self.screen_width, height = self.screen_height)
+    self.canvas.delete("all")
     self.canvasOrg = mc(self, self.canvas)
 
   
