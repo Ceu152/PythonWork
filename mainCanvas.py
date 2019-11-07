@@ -25,9 +25,22 @@ class makeCanvas:
       bbox = (x-self.size, y-self.size, x+self.size, y+self.size)
       self.item = self.canvas.create_oval(*bbox, fill="blue", activefill="grey", tags = "node")
       elem_value = self.insert_node(self.item)
-      self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value))
+      text = self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value))
+      self.canvas.tag_bind(text, '<Enter>', self.textFocus)
+      self.canvas.tag_bind(text, '<Leave>', self.textUnfocus)
       self.line_start = None
-    
+  
+  def textFocus(self, event):
+    text = self.canvas.find_withtag(tk.CURRENT)
+    if(text!=()):
+      text=text[0]
+      self.canvas.itemconfigure(text-1,fill="grey")
+  
+  def textUnfocus(self, event):
+    text = self.canvas.find_withtag(tk.CURRENT)
+    if(text!=()):
+      text=text[0]
+      self.canvas.itemconfigure(text-1,fill="blue")
 
   def set_size(self, valor): 
     self.size = valor
