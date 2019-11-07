@@ -31,6 +31,7 @@ class App(tk.Tk):
     menu.add_command(label="Quit",command=self.leave_project)
     menu.add_command(label="Properties")
     self.config(menu=menu)
+    self.new_canvas()
     
   #Função para abrir um arquivo  
   def choose_file(self):

@@ -4,6 +4,7 @@
 import tkinter as tk
 import math
 from functools import partial
+import math
 #-------***********-----------#
 from mainAlgorithm import graphStructure as gS
 
@@ -28,7 +29,9 @@ class makeCanvas:
       bbox = (x-self.size, y-self.size, x+self.size, y+self.size)
       self.item = self.canvas.create_oval(*bbox, fill="blue", activefill="grey", tags = "node")
       elem_value = self.insert_node(self.item)
-      self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value), tags = "number")
+      text = self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value), tags = "text")
+      self.canvas.tag_bind(text, '<Enter>', self.textFocus)
+      self.canvas.tag_bind(text, '<Leave>', self.textUnfocus)
       self.line_start = None
     
   #Define o tamanho dos nós
@@ -61,13 +64,24 @@ class makeCanvas:
 
   #Verifica se há um nó local
   def verify_pos(self, x, y):
-    all_nodes = self.canvas.find_withtag("node")
+    node = self.canvas.find_withtag(tk.CURRENT)
 
-    for node in all_nodes:
-      x0, y0, x1, y1 = self.canvas.coords(node)
-      if(x > x0 and x < x1 and y > y0 and y < y1):
-        self.draw_Edge(node, x1, y1)
-        return False
+    if(node!=()):
+      tag = self.canvas.itemcget(node, "tags").split(" ")[0]
+      node = node[0]
+
+      #assim ele pegara textos tambem
+      if(tag=="text"):
+        node=node-1
+
+      #no caso de ser uma edge
+      if(tag=="text" or tag=="node"):
+        x0, y0, x1, y1 = self.canvas.coords(node)
+      else:
+        return True
+
+      self.draw_Edge(node, x1, y1)
+      return False
 
     return True
   
@@ -77,11 +91,31 @@ class makeCanvas:
       self.line_start = (x1-self.size,y1-self.size,self.node_list.index(node))
     else:
       x_origin,y_origin,node_origin = self.line_start
+      
+      #tirando edge do node
+      angle = math.atan((x1-self.size-x_origin)/(y1-self.size-y_origin))
+      xoffset = self.size*math.sin(angle)
+      yoffset = self.size*math.cos(angle)
+      if(y1-self.size<y_origin):
+        yoffset = -1*yoffset
+        xoffset = -1*xoffset
+
       self.line_start=None
-      #calculate_angle(x_origin, y_origin, x1-self.size, y1-self.size)
-      line=(x_origin,y_origin,x1-self.size,y1-self.size)
-      self.canvas.create_line(*line, fill = "black", tags = "line")
+      line=(x_origin+xoffset,y_origin+yoffset,x1-self.size-xoffset,y1-self.size-yoffset)
+      self.canvas.create_line(*line, fill = "black")
       self.graph.insertEdge((node_origin,self.node_list.index(node)))
+
+  def textFocus(self, event):
+    text = self.canvas.find_withtag(tk.CURRENT)
+    if(text!=()):
+      text=text[0]
+      self.canvas.itemconfigure(text-1,fill="grey")
+  
+  def textUnfocus(self, event):
+    text = self.canvas.find_withtag(tk.CURRENT)
+    if(text!=()):
+      text=text[0]
+      self.canvas.itemconfigure(text-1,fill="blue")
   
   #Calcular o angulo entre dois nós
   def calculate_angle(self,x1,y1,x2,y2):
