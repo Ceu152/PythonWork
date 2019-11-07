@@ -102,7 +102,7 @@ class makeCanvas:
 
       self.line_start=None
       line=(x_origin+xoffset,y_origin+yoffset,x1-self.size-xoffset,y1-self.size-yoffset)
-      self.canvas.create_line(*line, fill = "black")
+      self.canvas.create_line(*line, fill = "black",tags = "line")
       self.graph.insertEdge((node_origin,self.node_list.index(node)))
 
   def textFocus(self, event):
@@ -145,3 +145,11 @@ class makeCanvas:
   def delete_graph(self):
     del(self.node_list[:])
     self.graph.deleteGraph()
+
+  #função que recebe as arestas
+  def get_edge_list(self):
+    return self.graph.edges
+
+  #função que insere arestas
+  def insert_edge(self, e1, e2):
+    self.graph.insertEdge((e1,e2))

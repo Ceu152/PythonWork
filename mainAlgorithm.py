@@ -16,14 +16,12 @@ class graphStructure:
     def insertNode(self,node):
         self.nodes.append(node)
         self.updateNodes()
-        print(self.nodes)
         #self.printMatrixes()
 
     
     def insertEdge(self,edge):
         self.edges.append(edge)
         self.updateEdges()
-        print(self.edges)
     
     #def deleteNode():
     
@@ -40,10 +38,10 @@ class graphStructure:
         self.makeAdjacencyMatrix()
 
     def makeIncidenceMatrix(self):
-        self.incidence_matrix = -nx.incidence_matrix(self.G)
+        self.incidence_matrix = nx.incidence_matrix(self.G)
     
     def makeAdjacencyMatrix(self):
-        self.adjacency_matrix = -nx.adjacency_matrix(self.G)
+        self.adjacency_matrix = nx.adjacency_matrix(self.G)
     
     def deleteGraph(self):
         self.G = nx.DiGraph()
@@ -55,6 +53,6 @@ class graphStructure:
     def printMatrixes(self):
         print("Matriz de incidência")
         print(self.adjacency_matrix.toarray())
-        print("Matriz de Incidência")
+        print("Matriz de adjacência")
         print(self.incidence_matrix.toarray())
 
