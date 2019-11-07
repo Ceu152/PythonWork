@@ -46,9 +46,11 @@ class graphStructure:
         self.adjacency_matrix = -nx.adjacency_matrix(self.G)
     
     def deleteGraph(self):
-        self.G = None
-        self.makeIncidenceMatrix()
-        self.makeAdjacencyMatrix()
+        self.G = nx.DiGraph()
+        del(self.nodes[:])
+        del(self.edges[:])
+        self.incidence_matrix = None
+        self.adjacency_matrix = None
     
     def printMatrixes(self):
         print("Matriz de incidência")

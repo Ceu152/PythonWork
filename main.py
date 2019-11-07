@@ -10,6 +10,8 @@ from mainCanvas import makeCanvas as mc
 
 
 class App(tk.Tk):
+  program_file = None
+
   def __init__(self):
     super().__init__()
     menu=tk.Menu(self)
@@ -38,8 +40,30 @@ class App(tk.Tk):
     filename=fd.askopenfilename(title="Open file",
                initialdir="/",
                filetypes=filetypes)
-    if filename:
-      print(filename)
+    print(filename)
+    inputFile = open(filename, "r")
+    if(inputFile.readline() == "graph_reader:OK\n"):
+      self.new_canvas()
+      leitor = inputFile.readline()
+      while True:
+          leitor = inputFile.readline()
+          if(leitor == "node_list\n"):
+            break
+          s = leitor.split()
+          x1 = float(s[1])
+          y1 = float(s[2])
+          x2 = float(s[3])
+          y2 = float(s[4])
+          tag1 = s[5]
+          if(tag1 == "node"):
+            leitor = inputFile.readline()
+            s = leitor.split()
+            x3 = float(s[1])
+            y3 = float(s[2])
+            tag2 = s[3]
+            self.canvasOrg.load_draw(x1,y1,x2,y2,tag1,x3,y3,tag2)
+          else:
+            self.canvasOrg.load_line(x1,y1,x2,y2)
 
   #Função para escolher um diretório 
   def choose_directory(self):
@@ -68,15 +92,35 @@ class App(tk.Tk):
     new_file=fd.asksaveasfile(title="Save file",
                 defaultextension=".txt",
                 filetypes=(("Text files","*.txt"),))
+    
     if new_file:
-      new_file.write()
-      new_file.close()
+      all_elements = self.canvas.find_all()
+      
+      with open(new_file.name, new_file.mode) as txt_file:
+        txt_file.write("graph_reader:OK\n")
+        txt_file.write("canvas\n")
+        for elem in all_elements:
+          txt_file.write(""+str(elem)+" ")
+          for e in self.canvas.coords(elem):
+            txt_file.write(str(e)+" ")
+          for t in list(self.canvas.gettags(elem)):
+            txt_file.write(t+" ")
+          txt_file.write("\n")
+        txt_file.write("node_list\n")
+        for node in self.canvasOrg.get_node_list():
+          txt_file.write(""+str(node)+" ")
+        txt_file.write("\n")
+
+        txt_file.write("end")
+
+    new_file.close()
 
   #Função para criar um novo canvas e colocá-lo na tela
   def new_canvas(self):
     #Criação do canvas no projeto 
     self.canvas.delete("all")
     self.canvasOrg = mc(self, self.canvas)
+    self.canvasOrg.delete_graph()
 
   
 app=App()
