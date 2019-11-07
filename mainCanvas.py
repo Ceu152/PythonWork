@@ -56,13 +56,13 @@ class makeCanvas:
       return i
 
   def verify_pos(self, x, y):
-    all_nodes = self.canvas.find_withtag("node")
+    node = self.canvas.find_withtag(tk.CURRENT)
 
-    for node in all_nodes:
+    if(node!=()):
+      node = node[0]
       x0, y0, x1, y1 = self.canvas.coords(node)
-      if(x > x0 and x < x1 and y > y0 and y < y1):
-        self.draw_Edge(node, x1, y1)
-        return False
+      self.draw_Edge(node, x1, y1)
+      return False
 
     return True
 
