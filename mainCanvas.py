@@ -25,7 +25,7 @@ class makeCanvas:
       bbox = (x-self.size, y-self.size, x+self.size, y+self.size)
       self.item = self.canvas.create_oval(*bbox, fill="blue", activefill="grey", tags = "node")
       elem_value = self.insert_node(self.item)
-      text = self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value))
+      text = self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value), tags = "text")
       self.canvas.tag_bind(text, '<Enter>', self.textFocus)
       self.canvas.tag_bind(text, '<Leave>', self.textUnfocus)
       self.line_start = None
@@ -60,11 +60,19 @@ class makeCanvas:
     node = self.canvas.find_withtag(tk.CURRENT)
 
     if(node!=()):
+      tag = self.canvas.itemcget(node, "tags").split(" ")[0]
       node = node[0]
-      print(self.canvas.itemcget(node, "tags"))
-      if(self.canvas.itemcget(node, "tags").split(" ")[0]!="node"):
+      
+      #assim ele pegara textos tambem
+      if(tag=="text"):
         node=node-1
-      x0, y0, x1, y1 = self.canvas.coords(node)
+
+      #no caso de ser uma edge
+      if(tag=="text" or tag=="node"):
+        x0, y0, x1, y1 = self.canvas.coords(node)
+      else:
+        return True
+
       self.draw_Edge(node, x1, y1)
       return False
 
