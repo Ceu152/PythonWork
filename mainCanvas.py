@@ -29,18 +29,6 @@ class makeCanvas:
       self.canvas.tag_bind(text, '<Enter>', self.textFocus)
       self.canvas.tag_bind(text, '<Leave>', self.textUnfocus)
       self.line_start = None
-  
-  def textFocus(self, event):
-    text = self.canvas.find_withtag(tk.CURRENT)
-    if(text!=()):
-      text=text[0]
-      self.canvas.itemconfigure(text-1,fill="grey")
-  
-  def textUnfocus(self, event):
-    text = self.canvas.find_withtag(tk.CURRENT)
-    if(text!=()):
-      text=text[0]
-      self.canvas.itemconfigure(text-1,fill="blue")
 
   def set_size(self, valor): 
     self.size = valor
@@ -73,6 +61,9 @@ class makeCanvas:
 
     if(node!=()):
       node = node[0]
+      print(self.canvas.itemcget(node, "tags"))
+      if(self.canvas.itemcget(node, "tags").split(" ")[0]!="node"):
+        node=node-1
       x0, y0, x1, y1 = self.canvas.coords(node)
       self.draw_Edge(node, x1, y1)
       return False
@@ -89,3 +80,15 @@ class makeCanvas:
       line=(x_origin,y_origin,x1-self.size,y1-self.size)
       self.canvas.create_line(*line, fill = "black")
       self.graph.insertEdge((node_origin,self.node_list.index(node)))
+
+  def textFocus(self, event):
+    text = self.canvas.find_withtag(tk.CURRENT)
+    if(text!=()):
+      text=text[0]
+      self.canvas.itemconfigure(text-1,fill="grey")
+  
+  def textUnfocus(self, event):
+    text = self.canvas.find_withtag(tk.CURRENT)
+    if(text!=()):
+      text=text[0]
+      self.canvas.itemconfigure(text-1,fill="blue")
