@@ -26,6 +26,7 @@ class makeCanvas:
       self.item = self.canvas.create_oval(*bbox, fill="blue", activefill="grey", tags = "node")
       elem_value = self.insert_node(self.item)
       self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value))
+      self.line_start = None
     
 
   def set_size(self, valor): 
