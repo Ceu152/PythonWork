@@ -3,6 +3,7 @@
 
 import tkinter as tk
 from functools import partial
+import math
 #-------***********-----------#
 from mainAlgorithm import graphStructure as gS
 
@@ -62,7 +63,7 @@ class makeCanvas:
     if(node!=()):
       tag = self.canvas.itemcget(node, "tags").split(" ")[0]
       node = node[0]
-      
+
       #assim ele pegara textos tambem
       if(tag=="text"):
         node=node-1
@@ -84,8 +85,17 @@ class makeCanvas:
         print(self.line_start)
     else:
       x_origin,y_origin,node_origin = self.line_start
+      
+      #tirando edge do node
+      angle = math.atan((x1-self.size-x_origin)/(y1-self.size-y_origin))
+      xoffset = self.size*math.sin(angle)
+      yoffset = self.size*math.cos(angle)
+      if(y1-self.size<y_origin):
+        yoffset = -1*yoffset
+        xoffset = -1*xoffset
+
       self.line_start=None
-      line=(x_origin,y_origin,x1-self.size,y1-self.size)
+      line=(x_origin+xoffset,y_origin+yoffset,x1-self.size-xoffset,y1-self.size-yoffset)
       self.canvas.create_line(*line, fill = "black")
       self.graph.insertEdge((node_origin,self.node_list.index(node)))
 
