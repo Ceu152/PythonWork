@@ -11,6 +11,7 @@ from mainAlgorithm import graphStructure as gS
 class makeCanvas:
   #varivaeis usadas para o desenho dos nós 
   nodeColor = "blue"
+  activeNodeColor = "grey"
   textColor = "white"
   
   #Variveis que pertencem a todos os nós
@@ -32,7 +33,7 @@ class makeCanvas:
     x, y = event.x, event.y
     if(self.verify_pos(x,y)):
       bbox = (x-self.size, y-self.size, x+self.size, y+self.size)
-      self.item = self.canvas.create_oval(*bbox, fill=self.nodeColor, activefill="grey", tags = "node")
+      self.item = self.canvas.create_oval(*bbox, fill=self.nodeColor, activefill=self.activeNodeColor, tags = "node")
       elem_value = self.insert_node(self.item)
       text = self.canvas.create_text(x,y,fill = "white", font = "Times 20 bold", text=str(elem_value), tags = "text")
       self.canvas.tag_bind(text, '<Enter>', self.textFocus)
@@ -115,17 +116,22 @@ class makeCanvas:
       self.canvas.create_line(*line, fill = "black",tags = "line")
       self.graph.insertEdge((node_origin,self.node_list.index(node)))
 
+  #Ao colocar mouse sobre o texto, trocar cor do node
   def textFocus(self, event):
     text = self.canvas.find_withtag(tk.CURRENT)
     if(text!=()):
       text=text[0]
-      self.canvas.itemconfigure(text-1,fill="grey")
+      self.canvas.itemconfigure(text-1,fill=self.activeNodeColor)
   
+  #Ao tirar mouse sobre o texto, voltar a cor do node
   def textUnfocus(self, event):
     text = self.canvas.find_withtag(tk.CURRENT)
     if(text!=()):
       text=text[0]
       self.canvas.itemconfigure(text-1,fill=self.nodeColor)
+
+  def lineFocus(self, event):
+    print("linha")
   
   #Calcular o angulo entre dois nós
   def calculate_angle(self,x1,y1,x2,y2):
@@ -141,7 +147,7 @@ class makeCanvas:
   #Carrega os nós de um arquivo
   def load_draw(self,x1,y1,x2,y2,tag1,x3,y3,tag2):
     bbox = (x1, y1, x2, y2)
-    self.item = self.canvas.create_oval(*bbox, fill=self.nodeColor, activefill="grey", tags = tag1)
+    self.item = self.canvas.create_oval(*bbox, fill=self.nodeColor, activefill=self.activeNodeColor, tags = tag1)
     elem_value = self.insert_node(self.item)
     text = self.canvas.create_text(x3,y3,fill = self.textColor, font = "Times 20 bold", text=str(elem_value), tags = tag2)
     self.canvas.tag_bind(text, '<Enter>', self.textFocus)
