@@ -101,6 +101,9 @@ class makeCanvas:
       angle = math.pi/2
       if((y1-self.size-y_origin)!=0):
         angle = math.atan((x1-self.size-x_origin)/(y1-self.size-y_origin))
+      else:
+        if(x_origin>x1-self.size):
+          angle = -1*angle
       xoffset = self.size*math.sin(angle)
       yoffset = self.size*math.cos(angle)
       if(y1-self.size<y_origin):
