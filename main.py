@@ -5,6 +5,8 @@
 import tkinter as tk
 import tkinter.filedialog as fd
 import tkinter.messagebox as mb
+from tkinter import *
+from tkinter.colorchooser import *
 import os
 #-------***********-----------#
 from mainCanvas import makeCanvas as mc
@@ -31,7 +33,7 @@ class App(tk.Tk):
     menu.add_cascade(labe="File",menu=file_menu)
     menu.add_command(label="About", command = self.create_aboutWindow)
     menu.add_command(label="Quit",command=self.leave_project)
-    menu.add_command(label="Properties")
+    menu.add_command(label="Properties", command = self.setting_window)
     self.config(menu=menu)
     self.new_canvas()
     
@@ -101,6 +103,35 @@ class App(tk.Tk):
     aboutWindow = tk.Toplevel(self)
     display = tk.Label(aboutWindow, text = "Python work About Graphs\nGroup= Alex Junior Pereira\nLeonardo Henrique de Melo")
     display.pack()
+
+  #Criação da janela de propriedades
+  def setting_window(self):
+    settingWindow = tk.Toplevel(self, height = 500, width = 500)
+    settingWindow.title("Propriedades")
+    bNColor = tk.Button(settingWindow, text = "Selecionar cor dos nós", command = self.node_color)
+    bBColor = tk.Button(settingWindow, text = "Selecionar cor do BackGround", command = self.bckg_color)
+    bTColor = tk.Button(settingWindow, text ="Selecionar cor do texto", command = self.text_color)
+    bNColor.pack()
+    bBColor.pack()
+    bTColor.pack()
+
+  #Criação da janela de seleção de cores
+  def node_color(self):
+    color = askcolor()
+    list(color)
+    self.canvasOrg.nodeColor = color[1]
+    self.canvasOrg.update_node()
+
+  def bckg_color(self):
+    color = askcolor()
+    list(color)
+    self.canvas.configure(bg = color[1])
+  
+  def text_color(self):
+    color = askcolor()
+    list(color)
+    self.canvasOrg.textColor = color[1]
+    self.canvasOrg.update_text()
 
   #define a função save as
   def save_as(self):
