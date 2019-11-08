@@ -22,7 +22,7 @@ class makeCanvas:
   def __init__(self, root ,canvas):
     self.root = root
     self.canvas = canvas
-    self.graph = gS() 
+    self.graph = gS()
     self.canvas.pack()
     self.canvas.bind("<Button-1>", self.draw_item)
     self.line_start = None
@@ -98,7 +98,9 @@ class makeCanvas:
       x_origin,y_origin,node_origin = self.line_start
       
       #tirando edge do node
-      angle = math.atan((x1-self.size-x_origin)/(y1-self.size-y_origin))
+      angle = math.pi/2
+      if((y1-self.size-y_origin)!=0):
+        angle = math.atan((x1-self.size-x_origin)/(y1-self.size-y_origin))
       xoffset = self.size*math.sin(angle)
       yoffset = self.size*math.cos(angle)
       if(y1-self.size<y_origin):
