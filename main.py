@@ -5,6 +5,7 @@
 import tkinter as tk
 import tkinter.filedialog as fd
 import tkinter.messagebox as mb
+import os
 #-------***********-----------#
 from mainCanvas import makeCanvas as mc
 
@@ -20,6 +21,7 @@ class App(tk.Tk):
     self.screen_height = self.winfo_screenheight()
     self.geometry(str(self.screen_width)+"x"+str(self.screen_height))
     self.canvas = tk.Canvas(self, bg = "white", width = self.screen_width, height = self.screen_height)
+    self.bind("<Control-s>", self.save_file)
     file_menu=tk.Menu(menu,tearoff=0)
     file_menu.add_command(label="New file", command = self.new_canvas)
     file_menu.add_command(label="Open", command = self.choose_file)
@@ -39,7 +41,7 @@ class App(tk.Tk):
                ("Images","*.jpg *.gif *.png"),
                ("All files", "*"))
     filename=fd.askopenfilename(title="Open file",
-               initialdir="/",
+               initialdir=os.getcwd(),
                filetypes=filetypes)
     inputFile = open(filename, "r")
     if(inputFile.readline() == "graph_reader:OK\n"):
@@ -105,7 +107,7 @@ class App(tk.Tk):
     self.save_file(True)
 
   #Função para salvar um arquivo feito pelo programa
-  def save_file(self, flag = False):
+  def save_file(self, flag = False, event = None):
     if self.program_file == None or flag:
       new_file=fd.asksaveasfile(title="Save file",
                   defaultextension=".txt",
