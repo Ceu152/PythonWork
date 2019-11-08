@@ -31,9 +31,9 @@ class App(tk.Tk):
     file_menu.add_command(label="Save", command = self.save_file)
     file_menu.add_command(label="Save as...", command = self.save_as)
     menu.add_cascade(labe="File",menu=file_menu)
+    menu.add_command(label="Properties", command = self.setting_window)
     menu.add_command(label="About", command = self.create_aboutWindow)
     menu.add_command(label="Quit",command=self.leave_project)
-    menu.add_command(label="Properties", command = self.setting_window)
     self.config(menu=menu)
     self.new_canvas()
     
@@ -111,9 +111,9 @@ class App(tk.Tk):
     bNColor = tk.Button(settingWindow, text = "Selecionar cor dos nós", command = self.node_color)
     bBColor = tk.Button(settingWindow, text = "Selecionar cor do BackGround", command = self.bckg_color)
     bTColor = tk.Button(settingWindow, text ="Selecionar cor do texto", command = self.text_color)
-    bNColor.pack()
-    bBColor.pack()
-    bTColor.pack()
+    bNColor.pack(fill = tk.BOTH)
+    bBColor.pack(fill = tk.BOTH)
+    bTColor.pack(fill = tk.BOTH)
 
   #Criação da janela de seleção de cores
   def node_color(self):
