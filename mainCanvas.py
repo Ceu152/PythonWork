@@ -143,7 +143,9 @@ class makeCanvas:
     bbox = (x1, y1, x2, y2)
     self.item = self.canvas.create_oval(*bbox, fill=self.nodeColor, activefill="grey", tags = tag1)
     elem_value = self.insert_node(self.item)
-    self.canvas.create_text(x3,y3,fill = self.textColor, font = "Times 20 bold", text=str(elem_value), tags = tag2)
+    text = self.canvas.create_text(x3,y3,fill = self.textColor, font = "Times 20 bold", text=str(elem_value), tags = tag2)
+    self.canvas.tag_bind(text, '<Enter>', self.textFocus)
+    self.canvas.tag_bind(text, '<Leave>', self.textUnfocus)
 
   #Carrega as arestas de um arquivo
   def load_line(self, x1,y1,x2,y2):
