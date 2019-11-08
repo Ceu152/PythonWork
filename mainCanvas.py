@@ -4,7 +4,7 @@
 import tkinter as tk
 import math
 from functools import partial
-import math
+from tkinter import simpledialog
 #-------***********-----------#
 from mainAlgorithm import graphStructure as gS
 
@@ -113,7 +113,8 @@ class makeCanvas:
 
       self.line_start=None
       line=(x_origin+xoffset,y_origin+yoffset,x1-self.size-xoffset,y1-self.size-yoffset)
-      self.canvas.create_line(*line, fill = "black",tags = "line")
+      edge = self.canvas.create_line(*line, fill = "black",tags = "line")
+      self.canvas.tag_bind(edge, '<Button-3>', self.lineFocus)
       self.graph.insertEdge((node_origin,self.node_list.index(node)))
 
   #Ao colocar mouse sobre o texto, trocar cor do node
@@ -131,7 +132,13 @@ class makeCanvas:
       self.canvas.itemconfigure(text-1,fill=self.nodeColor)
 
   def lineFocus(self, event):
-    print("linha")
+    menu=tk.Menu(self,tearoff=0)
+    menu.add_command(label="Cut", command=self.askEdge)
+    menu.post(event.x_root,event.y_root)
+
+  def askEdge(self):
+    resp = simpledialog.askstring("Edge weight", "What is this edge weight?")
+    print(resp)
   
   #Calcular o angulo entre dois nós
   def calculate_angle(self,x1,y1,x2,y2):
@@ -143,7 +150,7 @@ class makeCanvas:
   #Retorna a lista de nós nos grafos
   def get_node_list(self):
       return self.node_list
-
+    
   #Carrega os nós de um arquivo
   def load_draw(self,x1,y1,x2,y2,tag1,x3,y3,tag2):
     bbox = (x1, y1, x2, y2)
@@ -157,6 +164,7 @@ class makeCanvas:
   def load_line(self, x1,y1,x2,y2):
     line=(x1, y1,x2, y2)
     self.canvas.create_line(*line, fill = "black", tags = "line")
+    self.canvas.tag_bind(edge, '<Button-3>', self.lineFocus)
     #self.graph.insertEdge((node_origin,self.node_list.index(node)))
   
   #Apaga as o grafo escrito matemáticamente
