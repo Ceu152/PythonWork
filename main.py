@@ -101,6 +101,7 @@ class App(tk.Tk):
   #Criação da Janela de about do programa
   def create_aboutWindow(self):
     aboutWindow = tk.Toplevel(self)
+    aboutWindow.attributes('-topmost', True)
     display = tk.Label(aboutWindow, text = "Python work About Graphs\nGroup= Alex Junior Pereira\nLeonardo Henrique de Melo")
     display.pack()
 
@@ -108,6 +109,7 @@ class App(tk.Tk):
   def setting_window(self):
     settingWindow = tk.Toplevel(self, height = 500, width = 500)
     settingWindow.title("Propriedades")
+    settingWindow.attributes('-topmost', True)
     bNColor = tk.Button(settingWindow, text = "Selecionar cor dos nós", command = self.node_color)
     bBColor = tk.Button(settingWindow, text = "Selecionar cor do BackGround", command = self.bckg_color)
     bTColor = tk.Button(settingWindow, text ="Selecionar cor do texto", command = self.text_color)
