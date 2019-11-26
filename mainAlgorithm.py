@@ -36,13 +36,17 @@ class graphStructure:
         self.G.add_edges_from(self.edges)
         self.makeIncidenceMatrix()
         self.makeAdjacencyMatrix()
+        self.printMatrixes()
 
     def makeIncidenceMatrix(self):
         self.incidence_matrix = nx.incidence_matrix(self.G)
+        self.incidence_matrix = self.incidence_matrix.toarray()
+    
     
     def makeAdjacencyMatrix(self):
         self.adjacency_matrix = nx.adjacency_matrix(self.G)
-    
+        self.adjacency_matrix = self.adjacency_matrix.toarray()
+
     def deleteGraph(self):
         self.G = nx.DiGraph()
         del(self.nodes[:])
@@ -52,7 +56,24 @@ class graphStructure:
     
     def printMatrixes(self):
         print("Matriz de incidência")
-        print(self.adjacency_matrix.toarray())
+        print(self.adjacency_matrix)
         print("Matriz de adjacência")
-        print(self.incidence_matrix.toarray())
+        print(self.incidence_matrix)
 
+
+    #Funções para calcular uma DFS
+    def DFS_(self, vertice, visitado):
+        visitado[vertice] = True
+        for i in self.G[vertice]:
+            if(visitado[i]) == False:
+                self.DFS_(i, visitado)
+
+    #Função que cria o dfs
+    def DFS(self, vertice):
+        caminho = " "
+        visitado = [False] * len(self.G)
+        self.DFS_(vertice, visitado)
+        for num,node in enumerate(visitado, start=0):
+            if(node):
+                caminho += str(num)+" "
+        return caminho

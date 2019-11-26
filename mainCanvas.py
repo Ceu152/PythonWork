@@ -191,3 +191,7 @@ class makeCanvas:
     all_items = self.canvas.find_withtag("text")
     for item in all_items:
       self.canvas.itemconfigure(item,fill=self.textColor)
+
+  #função chama dfs
+  def call_dfs(self, vertice):
+    return self.graph.DFS(vertice)
