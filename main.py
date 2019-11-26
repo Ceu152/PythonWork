@@ -19,6 +19,7 @@ class App(tk.Tk):
     super().__init__()
     menu=tk.Menu(self)
     self.title("Graph Work")
+    self.iconbitmap('favicon.ico')
     self.screen_width = self.winfo_screenwidth()
     self.screen_height = self.winfo_screenheight()
     self.geometry(str(self.screen_width)+"x"+str(self.screen_height))
@@ -33,6 +34,7 @@ class App(tk.Tk):
     menu.add_cascade(labe="File",menu=file_menu)
     menu.add_command(label="Properties", command = self.setting_window)
     menu.add_command(label="About", command = self.create_aboutWindow)
+    menu.add_command(label="Run", command = self.run_algorithms)
     menu.add_command(label="Quit",command=self.leave_project)
     self.config(menu=menu)
     self.new_canvas()
@@ -173,6 +175,45 @@ class App(tk.Tk):
         txt_file.write("end")
 
     self.program_file.close()
+
+  #Função para executar algoritmos
+  def run_algorithms(self):
+    runWindow = tk.Toplevel(self)
+    runWindow.title("RUN")
+    runWindow.attributes('-topmost', True)
+    b1 = tk.Button(runWindow, text = "DFS", command = self.runDFS)
+    b1.pack()
+  
+    #Janela para entrar com parametros da dfs
+  def runDFS(self):
+    dfsParam = tk.Toplevel(self)
+    dfsParam.title("DFS")
+    dfsParam.geometry("300x300")
+    dfsParam.resizable(0,0)
+    dfsParam.attributes('-topmost', True)
+    display = tk.Label(dfsParam, text = "Nó")
+    display.pack()
+    entrada = Entry(dfsParam)
+    entrada.pack()
+    texto = tk.Text(dfsParam, height = 10, width = 20)
+    texto.pack()
+    runButton = tk.Button(dfsParam, text = "RUN", command = lambda:self.runDFS_(entrada, texto))
+    runButton.pack()
+
+  def runDFS_(self, entrada, texto):
+    valor = entrada.get()
+    caminho = str()
+    try:
+      valor = int(valor)
+
+      if(valor > self.canvasOrg.node_number):
+        raise Exception('Não foi possível realizar este nó')
+      caminho = self.canvasOrg.call_dfs(valor)
+    except:
+      print("Não foi possível realizar este nó")
+
+    texto.insert(tk.END, caminho+"\n")
+
 
   #Função para criar um novo canvas e colocá-lo na tela
   def new_canvas(self):
